@@ -2,6 +2,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   color: black;
   text-align: center;
+  user-select: none;
 }
 
 hr {
@@ -37,10 +38,15 @@ hr {
 
   /* Text */
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 300;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.tile:hover {
+  cursor: pointer;
+  background-color: lightgrey;
 }
 
 #digits {
@@ -60,28 +66,42 @@ hr {
 
   /* Text */
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 500;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.number:hover {
+  background-color: lightgrey;
+  cursor: pointer;
+}
+
 .number-selected {
   background-color: grey;
+  transition: 0.3s;
 }
 
 .tile-start {
   background-color: whitesmoke;
 }
 
+.tile-start:hover {
+  background-color: whitesmoke;
+}
+
 .horizontal-line {
-  border-bottom: 3px solid black;
+  border-bottom: 2px solid black;
 }
 
 .vertical-line {
-  border-right: 3px solid black;
+  border-right: 2px solid black;
 }
 
 .wrong-number {
   color: red;
+}
+
+.showColumn {
+  background-color: #f0f0;
 }
