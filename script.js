@@ -1,9 +1,28 @@
 var numSelected = null;
 var tileSelected = null;
 
+var easyBtn = document.getElementById("easyButton");
+var mediumBtn = document.getElementById("mediumButton");
+easyBtn.addEventListener('click', function() {
+  console.log('cliquei')
+  window.location.href = "/Sudoku/index.html"
+});
+
+mediumBtn.addEventListener('click', function() {
+  var mediumBoardJSON = JSON.stringify(mediumBoard)
+  var mediumSolutionJSON = JSON.stringify(mediumSolution)
+  localStorage.setItem('Board', mediumBoardJSON);
+  localStorage.setItem('Solution', mediumSolutionJSON);
+
+  document.getElementById("board").innerHTML = '';
+  document.getElementById("digits").innerHTML = '';
+  
+  window.location.href = "/Sudoku/Dificuldades/medio.html";
+});
+
 var errors = 0;
 
-var easyBoard = [
+var Board = [
   "--74916-5",
   "2---6-3-9",
   "-----7-1-",
@@ -15,7 +34,7 @@ var easyBoard = [
   "81--45---"
 ];
 
-var easySolution = [
+var Solution = [
   "387491625",
   "241568379",
   "569327418",
@@ -27,35 +46,43 @@ var easySolution = [
   "812945763"
 ];
 
-// var mediumBoard = [
-//   "---6-1---",
-//   "38----_74",
-//   "---------",
-//   "6-18-27-5",
-//   "--3-6-2--",
-//   "8-29-76-3",
-//   "---------",
-//   "79-----86",
-//   "---4-5---"
-// ]
+var mediumBoard = [
+  "---6-1---",
+  "38-----74",
+  "---------",
+  "6-18-27-5",
+  "--3-6-2--",
+  "8-29-76-3",
+  "---------",
+  "79-----86",
+  "---4-5---"
+]
 
-// var mediumSolution = [
-//   "527641839",
-//   "386259174",
-//   "419378562",
-//   "641832795",
-//   "973564218",
-//   "852917643",
-//   "234786951",
-//   "795123486",
-//   "168495327",
-// ]
+var mediumSolution = [
+  "527641839",
+  "386259174",
+  "419378562",
+  "641832795",
+  "973564218",
+  "852917643",
+  "234786951",
+  "795123486",
+  "168495327",
+]
 
 window.onload = function() {
-  setGame();
+  if (localStorage.getItem('Board') && localStorage.getItem('Solution')) {
+    Board = JSON.parse(localStorage.getItem('Board'));
+    Solution = JSON.parse(localStorage.getItem('Solution'));
+    localStorage.removeItem('Board');
+    localStorage.removeItem('Solution');
+  }
+
+setGame();
 }
 
 function setGame(){
+
   // Digits 1 - 9
   for (let i = 1; i <= 9; i++) {
     // <div id="1" class="number">1</div>
@@ -66,14 +93,15 @@ function setGame(){
     number.classList.add("number");
     document.getElementById("digits").appendChild(number);
   }
+
   
     // Board (9x9)
     for (let r = 0; r < 9; r++){
       for (let c = 0; c < 9; c++){
         var tile = document.createElement("div");
         tile.id = r.toString() + "-" + c.toString();
-        if(easyBoard[r][c] != "-"){
-          tile.innerText = easyBoard[r][c];
+        if(Board[r][c] != "-"){
+          tile.innerText = Board[r][c];
           tile.classList.add('tile-start');
         }
         if (r == 2 || r == 5){
@@ -95,7 +123,6 @@ function selectNumber(){
   }
   
   numSelected = this;
-  // console.log(numSelected.id)
   numSelected.classList.add('number-selected');
   numSelected.addEventListener('click', deselectNumber);
 }
@@ -119,13 +146,12 @@ function selectTile(){
     return;
   } else if (numSelected == null){
     this.innerText = "";
-    // console.log(coords)
     return;
   } else {
     this.innerText = numSelected.id;
 
     // Checking if the number is correct, if it is, will display the number in the selected tile. If else, it will be displayed in red color.
-    if (easySolution[r][c] == numSelected.id) {
+    if (Solution[r][c] == numSelected.id) {
       this.classList.remove('wrong-number');
     } else {
       errors += 1;
@@ -135,9 +161,6 @@ function selectTile(){
       wrongnumber.classList.add('wrong-number');
     }
   }
-
-  // console.log(coords)
-
 }
 
   
