@@ -4,8 +4,11 @@ var tileSelected = null;
 var easyBtn = document.getElementById("easyButton");
 var mediumBtn = document.getElementById("mediumButton");
 easyBtn.addEventListener('click', function() {
-  console.log('cliquei')
-  window.location.href = "/Sudoku/index.html"
+  if (window.location.pathname.endsWith("index.html")) {
+    return;
+  }
+
+  window.location.href = "../index.html"
 });
 
 mediumBtn.addEventListener('click', function() {
@@ -17,8 +20,13 @@ mediumBtn.addEventListener('click', function() {
   document.getElementById("board").innerHTML = '';
   document.getElementById("digits").innerHTML = '';
   
-  window.location.href = "/Sudoku/Dificuldades/medio.html";
+  if (window.location.pathname.endsWith("medio.html")) {
+    return;
+  }
+
+  window.location.href = "./Dificuldades/medio.html";
 });
+
 
 var errors = 0;
 
@@ -76,6 +84,8 @@ window.onload = function() {
     Solution = JSON.parse(localStorage.getItem('Solution'));
     localStorage.removeItem('Board');
     localStorage.removeItem('Solution');
+  } else {
+    console.warn("No board or solution found in localStorage. Using default values.");
   }
 
 setGame();
@@ -162,5 +172,3 @@ function selectTile(){
     }
   }
 }
-
-  

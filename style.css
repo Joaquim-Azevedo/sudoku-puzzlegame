@@ -1,9 +1,3 @@
-/* * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-} */
-
 body {
   font-family: "Roboto", sans-serif;
   font-weight: 600;
@@ -61,17 +55,18 @@ hr {
 }
 
 #board {
-  width: 600px;
-  height: 600px;
+  width: 630px;
+  height: 630px;
 
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
+  box-shadow: inset 0 0, 0 0 1em #000;
 }
 
 .tile {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   border: 1px solid lightgrey;
 
   /* Text */
@@ -93,7 +88,8 @@ hr {
 
   margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .number {
@@ -149,6 +145,7 @@ hr {
 
 @media (max-width: 600px) {
   body {
+    height: 100%;
     font-size: 14px;
     margin: 0;
   }
@@ -158,14 +155,14 @@ hr {
   }
 
   #board {
-    width: 400px;
-    height: 400px;
+    width: 360px;
+    height: 360px;
     margin: 0 auto;
   }
 
   .tile {
-    width: 42px;
-    height: 42px;
+    width: 38px;
+    height: 38px;
     font-size: 20px;
   }
 
