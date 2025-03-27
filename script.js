@@ -6,9 +6,9 @@ var mediumBtn = document.getElementById("mediumButton");
 easyBtn.addEventListener('click', function() {
   if (window.location.pathname.endsWith("index.html")) {
     return;
+  } else {
+    window.location.href = "../index.html"
   }
-
-  window.location.href = "../index.html"
 });
 
 mediumBtn.addEventListener('click', function() {
@@ -16,14 +16,14 @@ mediumBtn.addEventListener('click', function() {
   var mediumSolutionJSON = JSON.stringify(mediumSolution)
   localStorage.setItem('Board', mediumBoardJSON);
   localStorage.setItem('Solution', mediumSolutionJSON);
-
-  document.getElementById("board").innerHTML = '';
-  document.getElementById("digits").innerHTML = '';
   
   if (window.location.pathname.endsWith("medio.html")) {
     return;
   }
-
+  
+  document.getElementById("board").innerHTML = '';
+  document.getElementById("digits").innerHTML = '';
+  
   window.location.href = "./Dificuldades/medio.html";
 });
 
