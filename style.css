@@ -45,6 +45,7 @@ hr {
   padding: 7px 14px;
   border-radius: 7px;
   margin: 0 25px;
+  color: #000;
 }
 
 #difficulty button:hover {
