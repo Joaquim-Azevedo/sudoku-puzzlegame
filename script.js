@@ -163,12 +163,23 @@ function selectTile(){
     // Checking if the number is correct, if it is, will display the number in the selected tile. If else, it will be displayed in red color.
     if (Solution[r][c] == numSelected.id) {
       this.classList.remove('wrong-number');
+
+    } else if (window.location.pathname.endsWith("medio.html") | window.location.pathname.endsWith("hard.html")){
+      errors += 1;
+      document.getElementById("errors").innerText = errors;
     } else {
       errors += 1;
       document.getElementById("errors").innerText = errors;
       let wrongcoordsnumber = r.toString() + '-' + c.toString();
       var wrongnumber = document.getElementById(wrongcoordsnumber);
       wrongnumber.classList.add('wrong-number');
+    }
+    if (window.location.pathname.endsWith("medio.html") && errors === 3){
+      alert('Você perdeu!');
+      location.reload();
+    } else if (window.location.pathname.endsWith("hard.html") && errors === 1) {
+      alert('Você perdeu!');
+      location.reload();
     }
   }
 }

@@ -150,6 +150,10 @@ hr {
     margin: 0;
   }
 
+  hr {
+    width: 100%;
+  }
+
   .container {
     width: 100%;
   }
@@ -169,6 +173,10 @@ hr {
   #digits {
     margin: 20px auto;
     width: 100%;
+  }
+
+  #difficulty {
+    margin: 0 15px;
   }
 
   .number {
