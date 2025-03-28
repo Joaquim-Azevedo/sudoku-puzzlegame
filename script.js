@@ -226,11 +226,11 @@ function selectTile(){
       var wrongnumber = document.getElementById(wrongcoordsnumber);
       wrongnumber.classList.add('wrong-number');
     }
-    if (window.location.pathname.endsWith("medio.html") && errors === 3){
+    if (window.location.pathname.endsWith("medio.html") && errors === 4){
       alert('Você perdeu! Nessa dificuldade a quantidade de erros permitida é: 3');
       location.reload();
     } else if (window.location.pathname.endsWith("dificil.html") && errors === 1) {
-      alert('Você perdeu! Nessa dificuldade a quantidade de erros permitida é: 1');
+      alert('Você perdeu! Nessa dificuldade, ao errar você perde!');
       location.reload();
     } 
   }
