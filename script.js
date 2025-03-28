@@ -4,6 +4,7 @@ var tileSelected = null;
 var easyBtn = document.getElementById("easyButton");
 var mediumBtn = document.getElementById("mediumButton");
 easyBtn.addEventListener('click', function() {
+  localStorage.clear();
   if (window.location.pathname.endsWith("index.html")) {
     return;
   } else {
@@ -11,7 +12,7 @@ easyBtn.addEventListener('click', function() {
   }
 });
 
-mediumBtn.addEventListener('click', function() {
+mediumBtn.addEventListener('click', function mediumBoardinit() {
   var mediumBoardJSON = JSON.stringify(mediumBoard)
   var mediumSolutionJSON = JSON.stringify(mediumSolution)
   localStorage.setItem('Board', mediumBoardJSON);
@@ -84,8 +85,6 @@ window.onload = function() {
     Solution = JSON.parse(localStorage.getItem('Solution'));
     localStorage.removeItem('Board');
     localStorage.removeItem('Solution');
-  } else {
-    console.warn("No board or solution found in localStorage. Using default values.");
   }
 
 setGame();
@@ -105,24 +104,27 @@ function setGame(){
   }
 
   
-    // Board (9x9)
-    for (let r = 0; r < 9; r++){
-      for (let c = 0; c < 9; c++){
-        var tile = document.createElement("div");
-        tile.id = r.toString() + "-" + c.toString();
-        if(Board[r][c] != "-"){
-          tile.innerText = Board[r][c];
-          tile.classList.add('tile-start');
-        }
-        if (r == 2 || r == 5){
-          tile.classList.add('horizontal-line');
-        }
-        if (c == 5 || c == 2) {
-          tile.classList.add('vertical-line');
-        }
-        tile.addEventListener('click', selectTile);
-        tile.classList.add("tile");
-        document.getElementById("board").append(tile);
+  // Board (9x9)
+  for (let r = 0; r < 9; r++){
+    for (let c = 0; c < 9; c++){
+      var tile = document.createElement("div");
+      tile.classList.add("tile");
+      tile.id = r.toString() + "-" + c.toString();
+      if(Board[r][c] != "-"){
+        tile.innerText = Board[r][c];
+        tile.classList.add('tile-start');
+      }
+      if (r == 2 || r == 5){
+        tile.classList.add('horizontal-line');
+      }
+      if (c == 5 || c == 2) {
+        tile.classList.add('vertical-line');
+      }
+      
+      tile.addEventListener('click', highlightTile);
+      tile.addEventListener('click', selectTile);
+      
+      document.getElementById("board").append(tile);
       }
     }
 }
@@ -131,46 +133,41 @@ function selectNumber(){
   if (numSelected != null){
     numSelected.classList.remove('number-selected')
   }
-  
-  numSelected = this;
-  numSelected.classList.add('number-selected');
-  numSelected.addEventListener('click', deselectNumber);
-}
 
-// A function that will deselect the number and will allow the user to erase the placed number in the table.
-function deselectNumber(){
-  if(numSelected){
-    numSelected.removeEventListener('click', deselectNumber);
-    numSelected.classList.remove('number-selected');
-    numSelected = null
+  if (numSelected === this) {
+    numSelected = null;
+  } else {
+    numSelected = this;
+    numSelected.classList.add('number-selected');
   }
 }
 
 function selectTile(){
+
   // Coords = "0-0" "0-1", then 
-  let coords = this.id.split("-"); // => ["0", "0"]
-  let r = parseInt(coords[0]);
-  let c = parseInt(coords[1]);
+  tileSelected = this.id.split("-"); // => ["0", "0"]
+  row = parseInt(tileSelected[0]);
+  col = parseInt(tileSelected[1]);
 
   if(this.classList.contains('tile-start')){
     return;
   } else if (numSelected == null){
     this.innerText = "";
+    this.addEventListener('click', highlightTile)
     return;
   } else {
     this.innerText = numSelected.id;
 
     // Checking if the number is correct, if it is, will display the number in the selected tile. If else, it will be displayed in red color.
-    if (Solution[r][c] == numSelected.id) {
+    if (Solution[row][col] == numSelected.id) {
       this.classList.remove('wrong-number');
-
     } else if (window.location.pathname.endsWith("medio.html") | window.location.pathname.endsWith("hard.html")){
       errors += 1;
       document.getElementById("errors").innerText = errors;
     } else {
       errors += 1;
       document.getElementById("errors").innerText = errors;
-      let wrongcoordsnumber = r.toString() + '-' + c.toString();
+      let wrongcoordsnumber = row.toString() + '-' + col.toString();
       var wrongnumber = document.getElementById(wrongcoordsnumber);
       wrongnumber.classList.add('wrong-number');
     }
@@ -183,3 +180,44 @@ function selectTile(){
     }
   }
 }
+
+function highlightTile() {
+  if (tileSelected && this.id === tileSelected.join("-")) {
+    clearHighlights();
+    tileSelected = null;
+    return;
+  } else {
+    clearHighlights();
+    this.classList.add('tile-target');
+  }
+
+
+  tileSelected = this.id.split("-"); // ["row", "col"]
+  let row = parseInt(tileSelected[0]);
+  let col = parseInt(tileSelected[1]);
+  
+  // Add the column and row hightlights
+  for (let i = 0; i < 9; i++) {
+    // Line
+    let rowTile = document.getElementById(row + "-" + i);
+    if (rowTile) {
+      rowTile.classList.add("tile-highlight");
+    }
+    
+    // Column
+    let colTile = document.getElementById(i + "-" + col);
+    if (colTile) {
+      colTile.classList.add("tile-highlight");
+    }
+  }
+}
+
+// Função para limpar os destaques
+function clearHighlights() {
+  let highlightedTiles = document.querySelectorAll(".tile-highlight");
+  highlightedTiles.forEach(tile => {
+    tile.classList.remove("tile-highlight");
+    tile.classList.remove('tile-target');
+  });
+}
+
