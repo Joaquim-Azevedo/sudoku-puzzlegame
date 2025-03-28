@@ -3,6 +3,8 @@ var tileSelected = null;
 
 var easyBtn = document.getElementById("easyButton");
 var mediumBtn = document.getElementById("mediumButton");
+var hardBtn = document.getElementById('hardButton')
+
 easyBtn.addEventListener('click', function() {
   localStorage.clear();
   if (window.location.pathname.endsWith("index.html")) {
@@ -12,22 +14,43 @@ easyBtn.addEventListener('click', function() {
   }
 });
 
-mediumBtn.addEventListener('click', function mediumBoardinit() {
-  var mediumBoardJSON = JSON.stringify(mediumBoard)
-  var mediumSolutionJSON = JSON.stringify(mediumSolution)
+mediumBtn.addEventListener('click', function() {
+  var mediumBoardJSON = JSON.stringify(mediumBoard);
+  var mediumSolutionJSON = JSON.stringify(mediumSolution);
   localStorage.setItem('Board', mediumBoardJSON);
   localStorage.setItem('Solution', mediumSolutionJSON);
   
   if (window.location.pathname.endsWith("medio.html")) {
     return;
+  } else if (window.location.pathname.endsWith("dificil.html")) {
+    window.location.href = "medio.html"
+  } else {
+    window.location.href = "./Dificuldades/medio.html";
   }
   
   document.getElementById("board").innerHTML = '';
   document.getElementById("digits").innerHTML = '';
   
-  window.location.href = "./Dificuldades/medio.html";
 });
 
+hardBtn.addEventListener('click', function() {
+  var hardBoardJSON = JSON.stringify(hardBoard);
+  var hardSolutionJSON = JSON.stringify(hardSolution);
+  localStorage.setItem('Board', hardBoardJSON);
+  localStorage.setItem('Solution', hardSolutionJSON);
+
+  if (window.location.pathname.endsWith("dificil.html")) {
+    return;
+  } else if (window.location.pathname.endsWith("medio.html")) {
+    window.location.href = "dificil.html"
+  } else {
+    window.location.href = "./Dificuldades/dificil.html";
+  }
+
+  document.getElementById("board").innerHTML = '';
+  document.getElementById("digits").innerHTML = '';
+  
+})
 
 var errors = 0;
 
@@ -79,12 +102,40 @@ var mediumSolution = [
   "168495327",
 ]
 
+var hardBoard = [
+  "-8-------",
+  "--61--9-5",
+  "-4--62-1-",
+  "--9----5-",
+  "--8---3--",
+  "-5----1--",
+  "-9-48--2-",
+  "3-7--15--",
+  "-------3-",
+]
+
+var hardSolution = [
+  "981754263",
+  "276138945",
+  "543962817",
+  "139827456",
+  "468519372",
+  "752346198",
+  "695483721",
+  "327691584",
+  "814275639",
+]
+
+
 window.onload = function() {
-  if (localStorage.getItem('Board') && localStorage.getItem('Solution')) {
+  if (localStorage.getItem('Board') && localStorage.getItem('Solution') && window.location.pathname.endsWith('medio.html')) {
     Board = JSON.parse(localStorage.getItem('Board'));
     Solution = JSON.parse(localStorage.getItem('Solution'));
-    localStorage.removeItem('Board');
-    localStorage.removeItem('Solution');
+  }
+
+  if (localStorage.getItem('Board') && localStorage.getItem('Solution') && window.location.pathname.endsWith('dificil.html')) {
+    Board = JSON.parse(localStorage.getItem('Board'));
+    Solution = JSON.parse(localStorage.getItem('Solution'));
   }
 
 setGame();
@@ -161,9 +212,13 @@ function selectTile(){
     // Checking if the number is correct, if it is, will display the number in the selected tile. If else, it will be displayed in red color.
     if (Solution[row][col] == numSelected.id) {
       this.classList.remove('wrong-number');
-    } else if (window.location.pathname.endsWith("medio.html") | window.location.pathname.endsWith("hard.html")){
+    } else if (window.location.pathname.endsWith("medio.html")){
       errors += 1;
       document.getElementById("errors").innerText = errors;
+    } else if(window.location.pathname.endsWith("dificil.html")){
+      errors += 1;
+      document.getElementById("errors").innerText = errors;
+      
     } else {
       errors += 1;
       document.getElementById("errors").innerText = errors;
@@ -172,12 +227,12 @@ function selectTile(){
       wrongnumber.classList.add('wrong-number');
     }
     if (window.location.pathname.endsWith("medio.html") && errors === 3){
-      alert('Você perdeu!');
+      alert('Você perdeu! Nessa dificuldade a quantidade de erros permitida é: 3');
       location.reload();
-    } else if (window.location.pathname.endsWith("hard.html") && errors === 1) {
-      alert('Você perdeu!');
+    } else if (window.location.pathname.endsWith("dificil.html") && errors === 1) {
+      alert('Você perdeu! Nessa dificuldade a quantidade de erros permitida é: 1');
       location.reload();
-    }
+    } 
   }
 }
 
@@ -186,11 +241,12 @@ function highlightTile() {
     clearHighlights();
     tileSelected = null;
     return;
+  } else if(window.location.pathname.endsWith('dificil.html')){
+    return;
   } else {
     clearHighlights();
     this.classList.add('tile-target');
   }
-
 
   tileSelected = this.id.split("-"); // ["row", "col"]
   let row = parseInt(tileSelected[0]);

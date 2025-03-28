@@ -38,12 +38,6 @@ hr {
   align-items: center;
 }
 
-.hardContent span {
-  position: absolute;
-  font-size: 14px;
-  top: 62px;
-}
-
 #difficulty button {
   background: none;
   border: none;
@@ -184,10 +178,6 @@ hr {
 
   .container {
     width: 100%;
-  }
-
-  .hardContent span {
-    font-size: 10px;
   }
 
   #board {
